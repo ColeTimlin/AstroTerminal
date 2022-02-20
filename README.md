@@ -43,7 +43,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<img src="https://github.com/AstroLeapStudios/AstroTerminal/blob/main/Screenshot.PNG?raw=true" alt="Logo" width="480" height="270">
+<img src="https://github.com/AstroLeapStudios/AstroTerminal/blob/main/Screenshot.PNG?raw=true" alt="Logo" width="500" height="270">
 
 There are plenty of great terminals out there but, how many of them include installing PIP packages and also include the function to search Fortnite stats?
 
