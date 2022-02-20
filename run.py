@@ -1,17 +1,25 @@
 import os
+import fortnite_api
 from termcolor import cprint
 from pyfiglet import figlet_format
+import urllib.request
+import json
+
 
 version = "1.2"
 year = "2022"
+
+def stats(user):
+    print("----- Stats for player: "+ user + "-----\n")
+    print(fn.stats.fetch_by_name(user))
 
 os.system("title Astro Terminal " + version)
 cprint(figlet_format('Astro Terminal', font='big'),
        'blue', attrs=['bold'])
 
-print("Version " + version + " " + year)
+print("\033[1;37;40mVersion " + version + " " + year + " (type 'help' for a list of commands)")
 
-help = "-Commands-\n \nhelp (shows all commands)\nping (pings a certain web address and/or IP)\ncd (gets current directory of this application)\npip (allows you to install pip packages, straight from our terminal)\nipconfig (shows you your IP configuration)\ntaskmanager (opens the task manager application on your computer, making it easy to check your computer's performance)"
+help = "\033[1;33;40m=====\033[1;37;40mCommands\033[1;33;40m=====\033[1;37;40m\n \nhelp (shows all commands)\nping (pings a certain web address and/or IP)\ncd (gets current directory of this application)\npip (allows you to install pip packages, straight from our terminal)\nipconfig (shows you your IP configuration)\ntaskmanager (opens the task manager application on your computer, making it easy to check your computer's performance)\nfnstats (allows you to use the fortnite-api.com API to find any Fortnite player's stats; you need to supply your own API key)\ncrcards (shows a list of all cards in Clash Royale and their max level; you need to supply your own API key)"
 
 while True:
 
@@ -62,4 +70,32 @@ while True:
         os.system('cmd /c "ipconfig"')
     if command == "taskmanager":
         os.system("start Taskmgr")
-    
+    if command == "fnstats":
+        fileName = "key"
+        print("Add API key in 'key.txt'. Retrieve it at https://www.fortnite-api.com")
+        file = open(f"{fileName}.txt",encoding='latin-1')
+        full_text = file.read()
+        fn = fortnite_api.FortniteAPI(full_text)
+        user = input("Player Epic Games Account: ")
+        stats(user)
+    if command == "crcards":
+        input("You must first supply an API key in the 'crkey.txt' file. Retrieve a key at https//api.clashroyale.com. Click enter when key is supplied")
+        with open("crkey.txt") as f:
+            key = f.read().rstrip("\n")
+            url = "https://api.clashroyale.com/v1/"
+            endpoint = "cards"
+        
+        
+
+            request = urllib.request.Request(
+                        url+endpoint,
+                        None,
+                        {
+                            "Authorization": "Bearer %s" % key
+                        }
+            )
+            response = urllib.request.urlopen(request).read().decode("utf-8")
+            data = json.loads(response)
+
+            for item in data["items"]:
+                print("\n%s \n[Max Level: %d]" % (item["name"], item["maxLevel"]))
