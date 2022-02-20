@@ -4,7 +4,7 @@
 [![Discord Server](https://discordapp.com/api/guilds/932352178545377281/embed.png)](https://discord.gg/CFnRJ6hzSd)<br/>
 My very own terminal, written in Python. It includes the ability to ping an IP address, download PIP packages and more!
 
-# ❗ Requirements
+# ❗Requirements
 os - using system commands<br/>
 ```
 "python -m pip install os"
@@ -25,3 +25,9 @@ json - formatting json files from API databases<br/>
 ```
 "python -m pip install json"
 ```
+# ❔What is coming in the future?
+Here is a checklist of what I would like to add and how much is already added.<br/>
+[x]Fortnite API
+[x]Clash Royale API
+[x]PIP Install
+[ ]Chat Features
