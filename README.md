@@ -2,7 +2,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="https://github.com/AstroLeapStudios/">
     <img src="https://github.com/AstroLeapStudios/astroleapstudios.github.io/blob/main/Images/about.jpg?raw=true" alt="Logo" width="80" height="80">
   </a>
 
