@@ -100,6 +100,11 @@ Below, you will find instructions on how to install the PIP packages required to
 ```
 "python -m pip install beautifulsoup4"
 ```
+
+<br/>requests - retrieving data from the web<br/>
+```
+"python -m pip install requests"
+```
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
