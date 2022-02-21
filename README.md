@@ -110,6 +110,11 @@ Below, you will find instructions on how to install the PIP packages required to
 ```
 "python -m pip install aiohttp"
 ```
+
+<br/>numpy - calculations for the pong game<br/>
+```
+"python -m pip install numpy"
+```
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
