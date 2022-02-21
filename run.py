@@ -4,9 +4,28 @@ from termcolor import cprint
 from pyfiglet import figlet_format
 import urllib.request
 import json
+import pygame
+from pygame import key
+from pygame.event import pump
+from pygame.locals import *
+from ball import Ball
+from player import Player
+from scoreboard import Scoreboard
+import random
+
+W_KEY = pygame.K_w
+S_KEY = pygame.K_s
+UP_KEY = pygame.K_UP
+DOWN_KEY = pygame.K_DOWN
+
+pygame.init()
+
+def player_won(leftPlayer):
+    pass
 
 
-version = "1.2"
+
+version = "1.3"
 year = "2022"
 
 def stats(user):
@@ -19,7 +38,7 @@ cprint(figlet_format('Astro Terminal', font='big'),
 
 print("\033[1;37;40mVersion " + version + " " + year + " (type 'help' for a list of commands)")
 
-help = "\033[1;33;40m=====\033[1;37;40mCommands\033[1;33;40m=====\033[1;37;40m\n \nhelp (shows all commands)\nping (pings a certain web address and/or IP)\ncd (gets current directory of this application)\npip (allows you to install pip packages, straight from our terminal)\nipconfig (shows you your IP configuration)\ntaskmanager (opens the task manager application on your computer, making it easy to check your computer's performance)\nfnstats (allows you to use the fortnite-api.com API to find any Fortnite player's stats; you need to supply your own API key)\ncrcards (shows a list of all cards in Clash Royale and their max level; you need to supply your own API key)"
+help = "\033[1;33;40m=====\033[1;37;40mCommands\033[1;33;40m=====\033[1;37;40m\n \nhelp (shows all commands)\nping (pings a certain web address and/or IP)\ncd (gets current directory of this application)\npip (allows you to install pip packages, straight from our terminal)\nipconfig (shows you your IP configuration)\ntaskmanager (opens the task manager application on your computer, making it easy to check your computer's performance)\nfnstats (allows you to use the fortnite-api.com API to find any Fortnite player's stats; you need to supply your own API key)\ncrcards (shows a list of all cards in Clash Royale and their max level; you need to supply your own API key)\npong (loads a python remake of the popular game of the past, Pong)\ngoogle (search google for anything you'd like, straight from the terminal)\nwordchecker (Checks a .txt file for how many times it includes a word)"
 
 while True:
 
@@ -99,3 +118,99 @@ while True:
 
             for item in data["items"]:
                 print("\n%s \n[Max Level: %d]" % (item["name"], item["maxLevel"]))
+    if command == "pong":
+        surface = pygame.display.set_mode((500,500))
+        pygame.display.set_caption('Pong')
+        leftPlayer = Player(surface, (155,0,0), surface.get_width() * .1)
+        rightPlayer = Player(surface, (0,0,155), surface.get_width() * .9)
+        scoreboard = Scoreboard(surface, player_won)
+        ball = Ball(surface)
+        keep_playing = True
+        clock = pygame.time.Clock()
+        deltaTime = 0
+
+        while(keep_playing):
+            deltaTime = clock.tick(144) / 1000
+            #base events
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    keep_playing = False
+                    pygame.quit()
+                    break
+            if not keep_playing: break
+            #clearing screen
+            surface.fill((0,0,0))
+
+            #input
+            keys = pygame.key.get_pressed()
+
+            #moving lPlayer
+            if(keys[W_KEY]):
+                leftPlayer.move("up", deltaTime)
+            elif keys[S_KEY] and not keys[W_KEY]:
+                leftPlayer.move("down", deltaTime)
+    
+            #moving rPlayer
+            if keys[UP_KEY] and not keys[DOWN_KEY]: rightPlayer.move("up", deltaTime)
+            elif not keys[UP_KEY] and keys[DOWN_KEY]: rightPlayer.move("down", deltaTime)
+
+            ball.update(deltaTime)
+            ball.draw()
+            leftPlayer.draw()
+            rightPlayer.draw()
+            scoreboard.write_score()
+            #Collisions
+            if(ball.collision_check(leftPlayer.pos, leftPlayer.size)):
+                ball.velocity = (((abs(ball.velocity[0]) + 50)), ball.velocity[1] + (random.randint(-50, 50)))
+
+            elif ball.collision_check(rightPlayer.pos, rightPlayer.size):
+                ball.velocity = (-(abs(ball.velocity[0]) + 50), ball.velocity[1]+ (random.randint(-50, 50)))
+            #print(ball.velocity)
+
+            #Win Condition
+            if ball.pos[0] < 1:
+                selfleftPlayer = Player(surface, (155,0,0), surface.get_width() * .1)
+                rightPlayer = Player(surface, (0,0,155), surface.get_width() * .9)
+                ball = Ball(surface)
+                scoreboard.playerScored(True)
+            elif ball.pos[0] + ball.size >= surface.get_width():
+                selfleftPlayer = Player(surface, (155,0,0), surface.get_width() * .1)
+                rightPlayer = Player(surface, (0,0,155), surface.get_width() * .9)
+                ball = Ball(surface)
+                scoreboard.playerScored(False)
+
+            if pygame.init:
+                pygame.display.flip()
+            else:
+                break
+    if command == "google":
+        try:
+            from googlesearch import search
+        except ImportError:
+            print("No module named 'google' found")
+ 
+        query = input("Search Query: ")
+ 
+        for j in search(query, tld="co.in", num=10, stop=10, pause=2):
+            print(j)
+            print("\n")
+    if command == "wordchecker":
+        fileName = input("Name of the .txt file (excluding the file extension): ")
+
+        file = open(f"{fileName}.txt",encoding='latin-1')
+        full_text = file.read()
+
+        print(f"\nFile ({fileName}.txt) contains {len(full_text)} characters. \n")
+
+        num = input("How many words would you like to check for?: ")
+        print("\n")
+        n = range(int(num))
+
+        for i in n:
+              word = input(f"Word {i + 1}: ")
+              count = 0 
+              l = full_text.split(" ")
+              for c in l:
+                     if(c.upper() == word.upper()):
+                            count += 1
+              print(f"{fileName}.txt includes the word {word} {count} times \n")
