@@ -1,4 +1,7 @@
+from cgitb import html
 import os
+
+from numpy import byte
 import fortnite_api
 from termcolor import cprint
 from pyfiglet import figlet_format
@@ -12,6 +15,9 @@ from ball import Ball
 from player import Player
 from scoreboard import Scoreboard
 import random
+from urllib.request import urlopen
+import requests
+from bs4 import BeautifulSoup
 
 W_KEY = pygame.K_w
 S_KEY = pygame.K_s
@@ -190,9 +196,14 @@ while True:
             print("No module named 'google' found")
  
         query = input("Search Query: ")
- 
+        print("\n")
         for j in search(query, tld="co.in", num=10, stop=10, pause=2):
-            print(j)
+            l = j.split("\n")
+            soup = BeautifulSoup(urlopen(l[0]), features="html.parser")
+            try:
+                print(f"{soup.title.get_text()} \n {j}")
+            except AttributeError:
+                break
             print("\n")
     if command == "wordchecker":
         fileName = input("Name of the .txt file (excluding the file extension): ")
