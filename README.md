@@ -87,7 +87,19 @@ Below, you will find instructions on how to install the PIP packages required to
 ```
 "python -m pip install json"
 ```
+<br/>pygame - playing games in python<br/>
+```
+"python -m pip install pygame"
+```
+<br/>random - randomly generating ball movement<br/>
+```
+"python -m pip install random"
+```
 
+<br/>beautifulsoup4 - getting exact google search results<br/>
+```
+"python -m pip install beautifulsoup4"
+```
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
